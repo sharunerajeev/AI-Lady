@@ -2,6 +2,92 @@
 
 All notable changes to the AI Insurance Assistant project.
 
+## [2.1.0] - November 2, 2025
+
+### 🎯 AI Accuracy & Security Improvements
+
+#### Added
+
+- **Enhanced Azure OpenAI Prompts**
+
+  - Structured system prompts with CRITICAL RULES section
+  - Few-shot examples showing correct response patterns
+  - Response quality standards (length, tone, format)
+  - Explicit knowledge base citation instructions
+  - Better context building with top 5 FAQs (up from 3)
+  - Relevance scores included in context
+  - Priority weighting for high-importance knowledge
+
+- **Security Guardrails**
+
+  - Prompt injection detection (blocks malicious attempts)
+  - Topic validation (ensures insurance-related queries)
+  - Off-topic redirection with helpful messaging
+  - Input sanitization with regex patterns
+  - Blocked patterns: ignore instructions, system commands, code injection
+
+- **Knowledge Base Management System**
+
+  - New `knowledge_base/` directory for company-specific content
+  - JSON-based knowledge format (easy to edit)
+  - Support for multiple knowledge sources:
+    - `company_info.json` - Company details and contact
+    - `products/*.json` - Product-specific information
+    - `policies/*.json` - Process and policy documentation
+  - Automatic loading of custom knowledge on startup
+  - Admin API endpoints:
+    - `POST /api/v1/admin/knowledge/reload` - Reload without restart
+    - `GET /api/v1/admin/knowledge/stats` - View knowledge statistics
+
+- **Documentation**
+  - New `ACCURACY_AND_SECURITY_GUIDE.md` - Complete guide for:
+    - Azure OpenAI accuracy optimization
+    - Knowledge base management
+    - Security guardrails and testing
+  - Updated `knowledge_base/README.md` - Knowledge authoring guide
+  - Enhanced `.gitignore` to protect company-specific knowledge
+
+#### Changed
+
+- **AI Service (`ai_service.py`)**
+
+  - Added `_validate_insurance_query()` for input validation
+  - Enhanced `_build_context_prompt()` with structured format
+  - Increased FAQ context from 3 to 5 items
+  - Added priority-based ranking in search results
+
+- **Vector Service (`vector_service.py`)**
+
+  - Added JSON knowledge file loading
+  - Support for priority field (`high`, `medium`, `low`)
+  - Multi-source knowledge aggregation
+  - `reload_knowledge_base()` method for hot-reload
+
+- **API Routes (`routes.py`)**
+  - Added admin knowledge management endpoints
+  - Knowledge stats endpoint for monitoring
+
+#### Security
+
+- **Threat Protection**
+  - Blocked: prompt injection, system commands, code execution
+  - Validated: all queries checked for insurance relevance
+  - Redirected: off-topic queries with helpful guidance
+- **Response Boundaries**
+  - AI instructed to refuse political/controversial topics
+  - No code execution or calculations unrelated to insurance
+  - Explicit boundaries in system prompts
+
+#### Technical Details
+
+- Knowledge base auto-loads from `knowledge_base/` on startup
+- Default FAQs combined with custom knowledge
+- Priority boosting: high (+0.15), medium (+0.05), low (+0.0)
+- Security validation happens before AI processing
+- Graceful fallback on validation failures
+
+---
+
 ## [2.0.0] - November 2, 2025
 
 ### 🎨 Major UI Overhaul

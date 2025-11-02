@@ -15,6 +15,7 @@ from app.api.schemas import (
 )
 from app.services.ai_service import ai_service
 from app.services.database_service import db_service
+from app.services.vector_service import vector_store_service
 from app.config import get_settings
 
 router = APIRouter()
@@ -169,4 +170,61 @@ async def rate_conversation(conversation_id: int, rating: int):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error saving rating: {str(e)}",
+        )
+
+
+@router.post("/admin/knowledge/reload")
+async def reload_knowledge_base():
+    """
+    Reload the knowledge base from files (admin endpoint).
+
+    Use this after updating knowledge base JSON files to refresh the in-memory data
+    without restarting the server.
+    """
+    try:
+        result = vector_store_service.reload_knowledge_base()
+        return {
+            "status": "success",
+            "message": result["message"],
+            "total_items": result["total_items"],
+            "timestamp": datetime.utcnow().isoformat(),
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error reloading knowledge base: {str(e)}",
+        )
+
+
+@router.get("/admin/knowledge/stats")
+async def get_knowledge_stats():
+    """
+    Get statistics about the knowledge base (admin endpoint).
+
+    Returns information about loaded FAQs, categories, and sources.
+    """
+    try:
+        faqs = vector_store_service.faqs
+
+        # Count by category
+        categories = {}
+        priorities = {"high": 0, "medium": 0, "low": 0}
+
+        for faq in faqs:
+            cat = faq.get("category", "general")
+            categories[cat] = categories.get(cat, 0) + 1
+
+            priority = faq.get("priority", "medium")
+            priorities[priority] = priorities.get(priority, 0) + 1
+
+        return {
+            "total_items": len(faqs),
+            "categories": categories,
+            "priorities": priorities,
+            "timestamp": datetime.utcnow().isoformat(),
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error getting knowledge stats: {str(e)}",
         )

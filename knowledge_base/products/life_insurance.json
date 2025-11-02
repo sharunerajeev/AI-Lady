@@ -1,0 +1,43 @@
+{
+  "category": "life_insurance",
+  "company_name": "AI Insurance Company",
+  "last_updated": "2025-11-02",
+  "items": [
+    {
+      "question": "What term life insurance options do we offer?",
+      "answer": "We offer flexible term life insurance with the following options:\n- Coverage amounts: $50,000 to $5,000,000\n- Term lengths: 10, 15, 20, 25, or 30 years\n- Convertible to whole life (available within first 5 years)\n- No medical exam required for coverage up to $250,000 (simplified issue)\n- Rates starting at $25/month for $250,000 coverage (healthy non-smokers age 30-40)\n- Optional riders: Accidental death, waiver of premium, child term rider",
+      "keywords": [
+        "term life",
+        "term insurance",
+        "temporary coverage",
+        "affordable life insurance"
+      ],
+      "priority": "high"
+    },
+    {
+      "question": "What are our whole life insurance features?",
+      "answer": "Our whole life insurance provides:\n- Guaranteed lifetime coverage (premiums never increase)\n- Cash value accumulation (grows tax-deferred at 3-5% annually)\n- Loan options against cash value (up to 90% of cash value)\n- Paid-up additions available\n- Dividend payments (not guaranteed, based on company performance)\n- Coverage amounts: $25,000 to $2,000,000\n- No medical exam for simplified whole life up to $100,000\n- Living benefits for terminal illness",
+      "keywords": [
+        "whole life",
+        "permanent insurance",
+        "cash value",
+        "lifetime coverage",
+        "savings"
+      ],
+      "priority": "high"
+    },
+    {
+      "question": "Do you offer life insurance for seniors?",
+      "answer": "Yes! We offer specialized life insurance for seniors (ages 50-85):\n- Guaranteed acceptance whole life (ages 50-85, no medical exam, coverage up to $50,000)\n- Graded benefit period (full benefits after 2 years; premiums returned plus 10% if death occurs in first 2 years)\n- Fixed premiums that never increase\n- Coverage for final expenses, debts, or legacy planning\n- Simple application process (3-5 questions only)\n- Rates from $40/month for $10,000 coverage",
+      "keywords": [
+        "senior life insurance",
+        "elderly",
+        "over 50",
+        "over 60",
+        "guaranteed acceptance",
+        "final expense"
+      ],
+      "priority": "medium"
+    }
+  ]
+}

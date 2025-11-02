@@ -1,0 +1,113 @@
+{
+  "category": "health_insurance",
+  "company_name": "AI Insurance Company",
+  "last_updated": "2025-11-02",
+  "items": [
+    {
+      "question": "What health insurance plans do we offer?",
+      "answer": "We offer three main types of health insurance plans:\n\n1. Individual Health Plans - Coverage for you and your dependents with flexible deductible options ($500-$5,000)\n2. Family Health Plans - Comprehensive coverage for entire families with shared deductibles, save up to 30% vs individual policies\n3. Group Health Plans - Employer-sponsored coverage with competitive rates and comprehensive benefits\n\nAll plans include preventive care, emergency services, hospitalization, prescription drugs, and mental health services.",
+      "keywords": [
+        "health insurance",
+        "health plans",
+        "medical insurance",
+        "coverage options",
+        "individual",
+        "family",
+        "group"
+      ],
+      "priority": "high"
+    },
+    {
+      "question": "What is the difference between our HMO and PPO health plans?",
+      "answer": "We offer both HMO and PPO plans with distinct features:\n\nHMO (Health Maintenance Organization):\n- Lower monthly premiums (starting at $250/month)\n- Requires primary care physician (PCP) selection\n- Referrals needed for specialists\n- Network-only coverage (except emergencies)\n- No claim forms needed\n- Best for: Budget-conscious individuals who don't mind coordinated care\n\nPPO (Preferred Provider Organization):\n- Higher premiums (starting at $400/month) but more flexibility\n- No PCP requirement or referrals needed\n- See any doctor, in or out of network\n- Out-of-network coverage at 60-70% (vs 80-90% in-network)\n- May need to file claims for out-of-network care\n- Best for: Those who want maximum flexibility and choice",
+      "keywords": [
+        "HMO",
+        "PPO",
+        "difference",
+        "health plans",
+        "network",
+        "flexibility",
+        "primary care physician"
+      ],
+      "priority": "high"
+    },
+    {
+      "question": "What is our health insurance deductible and how does it work?",
+      "answer": "A health insurance deductible is the amount you pay out-of-pocket before your insurance starts paying. We offer plans with deductibles ranging from $500 to $5,000:\n\n- $500 deductible: Higher monthly premium ($450/mo), lower out-of-pocket\n- $1,500 deductible: Mid-tier premium ($350/mo), balanced approach\n- $3,000 deductible: Lower premium ($280/mo), higher initial costs\n- $5,000 deductible: Lowest premium ($220/mo), best for healthy individuals\n\nHow it works:\n1. You pay medical bills until you reach your deductible\n2. After deductible is met, you pay co-insurance (typically 20%)\n3. Insurance pays the rest (typically 80%)\n4. Once you hit out-of-pocket maximum, insurance pays 100%\n\nNote: Preventive care is covered at 100% regardless of deductible status.",
+      "keywords": [
+        "deductible",
+        "out of pocket",
+        "health insurance cost",
+        "how much",
+        "premium"
+      ],
+      "priority": "high"
+    },
+    {
+      "question": "What does our health insurance out-of-pocket maximum mean?",
+      "answer": "The out-of-pocket maximum is the most you'll pay for covered services in a year. After reaching this limit, we pay 100% of covered expenses.\n\nOur out-of-pocket maximums by plan:\n- Bronze Plan: $8,700 individual / $17,400 family\n- Silver Plan: $7,000 individual / $14,000 family\n- Gold Plan: $6,000 individual / $12,000 family\n- Platinum Plan: $4,000 individual / $8,000 family\n\nWhat counts toward out-of-pocket max:\n✓ Deductibles\n✓ Co-payments\n✓ Co-insurance\n\nWhat does NOT count:\n✗ Monthly premiums\n✗ Out-of-network care (in most plans)\n✗ Services not covered by your plan\n\nOnce you reach this limit, you have financial protection for the rest of the year.",
+      "keywords": [
+        "out of pocket maximum",
+        "maximum",
+        "limit",
+        "yearly limit",
+        "catastrophic coverage"
+      ],
+      "priority": "medium"
+    },
+    {
+      "question": "What preventive care services are covered at 100%?",
+      "answer": "Under the Affordable Care Act, we cover these preventive services at 100% with no deductible or co-pay:\n\nAdult Preventive Care:\n- Annual physical exam\n- Blood pressure screening\n- Cholesterol screening\n- Diabetes screening\n- Cancer screenings (mammogram, colonoscopy, etc.)\n- Depression screening\n- Obesity screening and counseling\n- Tobacco cessation counseling\n- Immunizations (flu, pneumonia, etc.)\n\nWomen's Preventive Care:\n- Well-woman visits\n- Mammograms\n- Pap smears\n- Contraception\n- Prenatal care\n- Breastfeeding support\n\nChildren's Preventive Care:\n- Well-child visits\n- Immunizations\n- Vision and hearing screening\n- Developmental assessments\n\nThese services must be from in-network providers to be covered at 100%.",
+      "keywords": [
+        "preventive care",
+        "free services",
+        "annual checkup",
+        "screening",
+        "vaccinations",
+        "no cost"
+      ],
+      "priority": "medium"
+    },
+    {
+      "question": "Do you cover prescription drugs and how do copays work?",
+      "answer": "Yes, all our health plans include prescription drug coverage with a 4-tier copay structure:\n\nTier 1 - Generic Drugs:\n- 30-day supply: $10 copay\n- 90-day supply: $25 copay\n- Covers: Generic antibiotics, blood pressure meds, etc.\n\nTier 2 - Preferred Brand Drugs:\n- 30-day supply: $35 copay\n- 90-day supply: $90 copay\n- Covers: Preferred brand-name drugs\n\nTier 3 - Non-Preferred Brand Drugs:\n- 30-day supply: $70 copay\n- 90-day supply: $180 copay\n- Covers: Non-preferred brand-name drugs\n\nTier 4 - Specialty Drugs:\n- 30-day supply: 25% co-insurance (max $250)\n- Covers: Specialty medications for complex conditions\n\nMail-order pharmacy available for 90-day supplies at discounted rates. Copays may apply to deductible depending on your plan.",
+      "keywords": [
+        "prescription",
+        "drugs",
+        "medication",
+        "copay",
+        "pharmacy",
+        "generic",
+        "brand name"
+      ],
+      "priority": "medium"
+    },
+    {
+      "question": "What mental health services are covered?",
+      "answer": "We provide comprehensive mental health coverage as part of all health insurance plans:\n\nOutpatient Mental Health:\n- Individual therapy: $30 copay per session\n- Group therapy: $15 copay per session\n- Psychiatric services: $50 copay per visit\n- Unlimited visits (no session limits)\n\nInpatient Mental Health:\n- Covered at same rate as medical hospitalization\n- $500 copay per admission\n- Medically necessary stays fully covered\n\nSubstance Abuse Treatment:\n- Outpatient programs: $30 copay per visit\n- Intensive outpatient (IOP): Covered at 80% after deductible\n- Inpatient detox and rehab: $500 copay per admission\n\nTeletherapy:\n- Virtual counseling sessions: $25 copay\n- 24/7 crisis hotline: No cost\n\nAll services must be provided by in-network providers. Pre-authorization may be required for inpatient services.",
+      "keywords": [
+        "mental health",
+        "therapy",
+        "counseling",
+        "psychiatrist",
+        "substance abuse",
+        "behavioral health"
+      ],
+      "priority": "medium"
+    },
+    {
+      "question": "Is maternity and childbirth covered?",
+      "answer": "Yes, maternity care is fully covered under all our health plans as an essential health benefit:\n\nPrenatal Care (100% covered, no deductible):\n- All prenatal visits and screenings\n- Ultrasounds and lab tests\n- Genetic counseling if needed\n\nLabor and Delivery:\n- Hospital stay: Standard deductible and co-insurance apply\n- Typical cost: $500-$3,000 depending on plan and delivery type\n- C-section covered same as vaginal delivery\n- Private room upgrade: Additional $200/day\n\nPostpartum Care:\n- Follow-up visits covered at 100%\n- Breastfeeding support and lactation consulting\n- Breast pump coverage (one per pregnancy)\n\nNewborn Care:\n- Automatically covered for first 30 days\n- Must add baby to policy within 60 days of birth\n- No waiting period or medical underwriting\n\nComplications covered same as other medical conditions. NICU stays covered with same cost-sharing as adult hospitalization.",
+      "keywords": [
+        "maternity",
+        "pregnancy",
+        "prenatal",
+        "childbirth",
+        "delivery",
+        "newborn",
+        "obstetrics"
+      ],
+      "priority": "medium"
+    }
+  ]
+}

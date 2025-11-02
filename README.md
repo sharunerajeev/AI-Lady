@@ -84,6 +84,13 @@ The modern web interface is built with:
 
 ## 🚀 Quick Start
 
+**📖 Detailed Guides:**
+
+- [DEPLOYMENT.md](DEPLOYMENT.md) - Complete deployment instructions
+- [ACCURACY_AND_SECURITY_GUIDE.md](ACCURACY_AND_SECURITY_GUIDE.md) - Improve AI & add guardrails
+- [knowledge_base/README.md](knowledge_base/README.md) - Add company knowledge
+- [RAG_SYSTEM.md](RAG_SYSTEM.md) - Understanding our RAG implementation
+
 ### Option 1: Local Development (Recommended)
 
 1. **Clone or navigate to the project directory**

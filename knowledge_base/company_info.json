@@ -1,0 +1,71 @@
+{
+  "category": "company_information",
+  "company_name": "AI Insurance Company",
+  "last_updated": "2025-11-02",
+  "items": [
+    {
+      "question": "What insurance products does our company offer?",
+      "answer": "AI Insurance Company offers comprehensive coverage across four main categories: Life Insurance (Term, Whole Life, Universal Life), Health Insurance (Individual, Family, Group plans), Auto Insurance (Liability, Collision, Comprehensive), and Home Insurance (Homeowners, Renters, Condo). We also provide specialty coverages including umbrella policies, flood insurance, and business insurance.",
+      "keywords": [
+        "products",
+        "offerings",
+        "what do you offer",
+        "types of insurance",
+        "services"
+      ],
+      "priority": "high"
+    },
+    {
+      "question": "What are your business hours and contact information?",
+      "answer": "Our customer support team is available 24/7 through multiple channels:\n- Phone: 1-800-INSURANCE (24/7 hotline)\n- Email: support@aiinsurance.com (response within 24 hours)\n- Live Chat: Available on our website and mobile app (24/7)\n- Branch offices: Monday-Friday 9 AM - 6 PM, Saturday 9 AM - 2 PM (local time)\n- Claims hotline: 1-800-CLAIMS-24 (available 24/7 for emergencies)",
+      "keywords": [
+        "hours",
+        "contact",
+        "phone number",
+        "email",
+        "customer service",
+        "support"
+      ],
+      "priority": "high"
+    },
+    {
+      "question": "How can I get a quote for insurance?",
+      "answer": "Getting a quote is easy! You can:\n1. Visit our website at www.aiinsurance.com and use our instant quote calculator\n2. Call us at 1-800-INSURANCE to speak with an agent\n3. Download our mobile app (iOS/Android) for quick quotes\n4. Visit any of our local branch offices\n5. Email quote@aiinsurance.com with your information\n\nMost quotes are provided within minutes for auto and home insurance, while life and health insurance quotes may take 24-48 hours for personalized assessment.",
+      "keywords": [
+        "quote",
+        "get quote",
+        "pricing",
+        "cost",
+        "how much",
+        "price estimate"
+      ],
+      "priority": "high"
+    },
+    {
+      "question": "Do you offer multi-policy discounts?",
+      "answer": "Yes! We offer generous multi-policy (bundling) discounts:\n- Home + Auto: Save up to 25%\n- Home + Auto + Life: Save up to 30%\n- Multiple vehicles: Save 10-15% on each additional vehicle\n- Multiple properties: Save 15% on second property\n\nBundling also simplifies your insurance management with one renewal date, one payment, and one point of contact.",
+      "keywords": [
+        "discount",
+        "bundling",
+        "multi-policy",
+        "save money",
+        "cheaper",
+        "combination"
+      ],
+      "priority": "high"
+    },
+    {
+      "question": "What payment methods do you accept?",
+      "answer": "We accept multiple payment methods for your convenience:\n- Credit/Debit cards (Visa, Mastercard, American Express, Discover)\n- Bank account (ACH) automatic withdrawal\n- Check or money order (by mail)\n- PayPal and Venmo\n- Mobile wallet (Apple Pay, Google Pay)\n\nPayment frequencies available: monthly, quarterly, semi-annually, or annually. Annual payment typically receives a 5-10% discount.",
+      "keywords": [
+        "payment",
+        "pay",
+        "billing",
+        "credit card",
+        "bank account",
+        "how to pay"
+      ],
+      "priority": "medium"
+    }
+  ]
+}

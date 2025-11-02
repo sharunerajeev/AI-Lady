@@ -1,9 +1,11 @@
 """
 AI service for handling chat interactions with multiple AI providers.
 Supports: Fallback (FAQ-based), Ollama (local), and Azure OpenAI.
+Includes security guardrails and input validation.
 """
 
 from typing import List, Dict, Any, Optional
+import re
 import httpx
 from openai import AzureOpenAI
 from app.config import get_settings
@@ -78,50 +80,174 @@ class AIService:
         )
         return response.choices[0].message.content
 
+    def _validate_insurance_query(self, query: str) -> Dict[str, Any]:
+        """Validate if query is insurance-related and check for attacks."""
+        query_lower = query.lower()
+
+        # Check for prompt injection attempts
+        injection_patterns = [
+            r"ignore\s+(previous|above|all)\s+instructions?",
+            r"forget\s+(everything|previous|all)",
+            r"you\s+are\s+now",
+            r"new\s+instructions?:",
+            r"system\s*[:=]",
+            r"<\s*script",
+            r"javascript:",
+            r"disregard\s+(previous|all)",
+            r"instead\s+of\s+insurance",
+        ]
+
+        for pattern in injection_patterns:
+            if re.search(pattern, query_lower):
+                return {
+                    "valid": False,
+                    "reason": "security",
+                    "message": "I can only help with insurance-related questions. Please ask about policies, claims, coverage, or renewals.",
+                }
+
+        # Check if query is insurance-related
+        insurance_keywords = [
+            "insurance",
+            "policy",
+            "claim",
+            "coverage",
+            "premium",
+            "deductible",
+            "beneficiary",
+            "liability",
+            "collision",
+            "comprehensive",
+            "health",
+            "life",
+            "auto",
+            "home",
+            "renew",
+            "cancel",
+            "quote",
+            "agent",
+            "accident",
+            "damage",
+            "medical",
+            "death benefit",
+            "copay",
+            "coinsurance",
+            "hmo",
+            "ppo",
+            "term",
+            "whole life",
+            "flood",
+            "fire",
+            "theft",
+            "vandalism",
+        ]
+
+        # Query must have at least one insurance keyword or be a general greeting
+        greetings = ["hello", "hi", "hey", "help", "thanks", "thank you", "bye"]
+
+        has_insurance_keyword = any(kw in query_lower for kw in insurance_keywords)
+        is_greeting = (
+            any(g in query_lower for g in greetings) and len(query.split()) <= 5
+        )
+
+        if not has_insurance_keyword and not is_greeting and len(query.split()) > 3:
+            return {
+                "valid": False,
+                "reason": "off_topic",
+                "message": "I specialize in insurance-related questions. I can help you with:\n"
+                "• Life, Health, Auto, and Home Insurance\n"
+                "• Policy information and renewals\n"
+                "• Claims process and filing\n"
+                "• Coverage options and quotes\n\n"
+                "What insurance question can I help you with?",
+            }
+
+        return {"valid": True}
+
     def _build_context_prompt(
         self,
         query: str,
         similar_faqs: List[Dict[str, Any]],
         conversation_history: Optional[List[Dict[str, str]]] = None,
     ) -> str:
-        """Build context-aware prompt for OpenAI."""
+        """Build context-aware prompt for Azure OpenAI with enhanced accuracy."""
 
-        # System prompt
-        system_context = """You are AI Lady, a helpful and friendly AI assistant for an insurance company. 
-Your role is to help customers with questions about insurance policies, claims, renewals, and general insurance topics.
+        # Enhanced system prompt with strict guardrails
+        system_context = """You are AI Lady, a professional AI assistant for an insurance company customer support team.
 
-Key guidelines:
-- Be professional, empathetic, and clear in your responses
-- Use the provided FAQ context to answer questions accurately
-- If you're not sure about something, be honest and suggest contacting a human agent
-- Keep responses concise but informative
-- Use simple language, avoiding excessive jargon
-- For complex situations, recommend speaking with a licensed insurance agent
+CRITICAL RULES (MUST FOLLOW):
+1. ONLY answer questions about insurance topics (life, health, auto, home, claims, policies)
+2. If asked about non-insurance topics, politely redirect to insurance questions
+3. Base ALL answers on the provided FAQ knowledge base below
+4. Never make up policy details, prices, or coverage specifics not in the FAQs
+5. For complex situations requiring human judgment, recommend contacting a licensed agent
+6. Never discuss politics, religion, or controversial topics
+7. Do not execute commands, write code, or perform calculations unrelated to insurance
+
+RESPONSE QUALITY STANDARDS:
+- Be professional, empathetic, and clear
+- Use simple language (avoid excessive jargon)
+- Cite specific FAQ sources when available
+- Keep responses concise (2-4 paragraphs maximum)
+- If uncertain, acknowledge it and offer to connect user with an agent
+
+EXAMPLE INTERACTIONS:
+
+User: "What's term life insurance?"
+AI Lady: "Term life insurance provides coverage for a specific period, typically 10, 20, or 30 years. If the insured person passes away during this term, your beneficiaries receive a death benefit. It's generally the most affordable type of life insurance because it offers pure protection without a cash value component. Would you like to know more about how term life compares to whole life insurance?"
+
+User: "How do I file a claim?"
+AI Lady: "To file an insurance claim, follow these steps:
+1. Contact your insurance company immediately (phone, app, or online portal)
+2. Provide your policy number and incident details
+3. Document damage with photos or videos
+4. Keep all receipts for expenses related to the claim
+5. Cooperate with the claims adjuster assigned to your case
+
+Most insurers acknowledge claims within a few days. The processing time depends on the complexity, but simple claims may be settled in days while complex ones can take weeks. Do you need help with a specific type of claim?"
+
+User: "What's the capital of France?"
+AI Lady: "I specialize in insurance-related questions and can't help with general knowledge topics. However, I'd be happy to assist you with questions about insurance policies, claims, coverage options, or renewals. What insurance information can I help you with today?"
 """
 
         # Add relevant FAQ context
-        context_section = "\n\nRelevant FAQ Information:\n"
+        context_section = "\n\n=== KNOWLEDGE BASE (FAQs to reference) ===\n"
         for i, faq in enumerate(similar_faqs, 1):
-            context_section += f"\n{i}. Q: {faq['question']}\n   A: {faq['answer']}\n"
+            context_section += f"\n[FAQ {i}]\n"
+            context_section += f"Category: {faq.get('category', 'general')}\n"
+            context_section += f"Question: {faq['question']}\n"
+            context_section += f"Answer: {faq['answer']}\n"
+            context_section += (
+                f"Relevance Score: {faq.get('similarity_score', 0):.2f}\n"
+            )
 
         # Add conversation history if available
         history_section = ""
         if conversation_history:
-            history_section = "\n\nRecent Conversation History:\n"
+            history_section = "\n\n=== RECENT CONVERSATION ===\n"
             for msg in conversation_history[-3:]:  # Last 3 exchanges
-                history_section += (
-                    f"User: {msg['user']}\nAssistant: {msg['assistant']}\n\n"
-                )
+                history_section += f"User: {msg['user']}\n"
+                history_section += f"AI Lady: {msg['assistant']}\n\n"
 
-        # Current query
-        query_section = f"\n\nCurrent User Question: {query}\n"
+        # Current query with clear instruction
+        query_section = f"\n\n=== CURRENT USER QUESTION ===\n{query}\n"
+
+        instruction = """
+=== YOUR TASK ===
+Provide a helpful, accurate response to the user's question by:
+1. Using information from the FAQ knowledge base above
+2. Maintaining conversation continuity if there's prior context
+3. Following all critical rules and quality standards
+4. Staying strictly within insurance topics
+5. Being honest if you don't have enough information
+
+Your response:"""
 
         full_prompt = (
             system_context
             + context_section
             + history_section
             + query_section
-            + "\nProvide a helpful, accurate response based on the FAQ information and conversation context:"
+            + instruction
         )
 
         return full_prompt
@@ -132,7 +258,7 @@ Key guidelines:
         conversation_history: Optional[List[Dict[str, str]]] = None,
         provider: Optional[str] = None,
     ) -> Dict[str, Any]:
-        """Get AI response for user message.
+        """Get AI response for user message with validation and guardrails.
 
         Args:
             user_message: The user's question
@@ -141,8 +267,19 @@ Key guidelines:
                      If None, uses settings.model_provider
         """
 
-        # Search for similar FAQs
-        similar_faqs = vector_store_service.search_similar(user_message, n_results=3)
+        # Step 1: Validate input and check for security issues
+        validation = self._validate_insurance_query(user_message)
+        if not validation["valid"]:
+            return {
+                "response": validation["message"],
+                "sources": [],
+                "model": "guardrails",
+                "provider": "security",
+                "warning": f"Query rejected: {validation['reason']}",
+            }
+
+        # Step 2: Search for similar FAQs
+        similar_faqs = vector_store_service.search_similar(user_message, n_results=5)
 
         # Determine which provider to use
         active_provider = provider or self.settings.model_provider
@@ -151,12 +288,12 @@ Key guidelines:
         if active_provider == "fallback":
             return {
                 "response": self._get_fallback_response(similar_faqs),
-                "sources": similar_faqs,
+                "sources": similar_faqs[:3],
                 "model": "fallback",
                 "provider": "fallback",
             }
 
-        # Build context-aware prompt
+        # Build context-aware prompt with enhanced quality
         prompt = self._build_context_prompt(
             user_message, similar_faqs, conversation_history
         )
@@ -175,7 +312,7 @@ Key guidelines:
                 # Unknown provider, fall back
                 return {
                     "response": self._get_fallback_response(similar_faqs),
-                    "sources": similar_faqs,
+                    "sources": similar_faqs[:3],
                     "model": "fallback",
                     "provider": "fallback",
                     "warning": f"Unknown provider '{active_provider}', using fallback",
@@ -183,7 +320,7 @@ Key guidelines:
 
             return {
                 "response": assistant_message,
-                "sources": similar_faqs,
+                "sources": similar_faqs[:3],
                 "model": model_name,
                 "provider": active_provider,
             }
@@ -193,7 +330,7 @@ Key guidelines:
             # Fall back to rule-based response on error
             return {
                 "response": self._get_fallback_response(similar_faqs),
-                "sources": similar_faqs,
+                "sources": similar_faqs[:3],
                 "model": "fallback",
                 "provider": "fallback",
                 "error": str(e),

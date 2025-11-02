@@ -1,0 +1,85 @@
+{
+  "category": "home_insurance",
+  "company_name": "AI Insurance Company",
+  "last_updated": "2025-11-02",
+  "items": [
+    {
+      "question": "What does our homeowners insurance cover?",
+      "answer": "Our comprehensive homeowners insurance (HO-3 policy) provides protection for:\n\nDWELLING COVERAGE (Coverage A):\n- Covers: Structure of your home, attached structures\n- Amount: Based on replacement cost (not market value)\n- Includes: Roof, walls, floors, built-in appliances, plumbing, electrical\n- Typical coverage: $200,000 to $1,000,000+\n\nOTHER STRUCTURES (Coverage B):\n- Covers: Detached garage, shed, fence, pool, gazebo\n- Amount: Typically 10% of dwelling coverage\n- Example: $300K dwelling = $30K other structures\n\nPERSONAL PROPERTY (Coverage C):\n- Covers: Furniture, clothing, electronics, appliances\n- Amount: Typically 50-70% of dwelling coverage\n- Example: $300K dwelling = $150K-$210K personal property\n- Special limits: Jewelry ($2,500), cash ($500), electronics ($5,000)\n- Upgrade: Scheduled personal property for high-value items\n\nLOSS OF USE (Coverage D):\n- Covers: Hotel, meals, temporary housing during repairs\n- Amount: Typically 20-30% of dwelling coverage\n- Duration: Until home is livable or policy limit reached\n\nPERSONAL LIABILITY (Coverage E):\n- Covers: Injuries to others, damage to others' property\n- Amount: $100K, $300K, or $500K standard (higher available)\n- Includes: Legal defense costs\n- Examples: Guest slips on stairs, your dog bites neighbor\n\nMEDICAL PAYMENTS (Coverage F):\n- Covers: Minor injuries to guests (no fault required)\n- Amount: $1,000-$5,000\n- Example: Guest cuts hand on broken glass\n\nCOVERED PERILS: Fire, lightning, wind, hail, theft, vandalism, water damage (sudden), falling objects, and 12+ other named perils.",
+      "keywords": [
+        "homeowners insurance",
+        "home insurance",
+        "coverage",
+        "what is covered",
+        "dwelling",
+        "HO-3"
+      ],
+      "priority": "high"
+    },
+    {
+      "question": "What is NOT covered by standard homeowners insurance?",
+      "answer": "Standard homeowners insurance does NOT cover these common situations:\n\nNATURAL DISASTERS (Require separate policies):\n✗ Flood damage - Need separate flood insurance ($400-$2,000/year)\n✗ Earthquake damage - Separate earthquake policy required\n✗ Landslides and sinkholes (in most policies)\n✗ Hurricane/named storm deductibles may apply (1-5% of dwelling)\n\nMAINTENANCE AND WEAR:\n✗ Gradual damage (slow roof leak developing over months)\n✗ Mold from maintenance issues (covered if from sudden event)\n✗ Pest damage (termites, rodents, insects)\n✗ Wear and tear, deterioration, aging\n✗ Mechanical breakdown of systems\n\nWATER DAMAGE:\n✗ Sewer backup (add rider for $50-100/year)\n✗ Sump pump failure (add rider)\n✗ Flood (needs separate flood insurance)\n✓ Sudden water damage IS covered (burst pipe, appliance leak)\n\nOTHER EXCLUSIONS:\n✗ Intentional damage\n✗ War, nuclear hazard, government action\n✗ Power failure (unless caused by covered peril)\n✗ Vacancy over 60 days\n✗ Business activities (need business policy)\n✗ Dog bites from \"dangerous breeds\" (some insurers)\n✗ Trampolines and diving boards (some insurers)\n\nHIGH-VALUE ITEMS (Limited coverage):\n✗ Jewelry over $2,500 total\n✗ Art and collectibles over $5,000\n✗ Cash over $500\n✗ Business equipment\nSOLUTION: Add scheduled personal property rider\n\nAVAILABLE ENDORSEMENTS to fill gaps:\n- Water backup coverage: $50-100/year\n- Scheduled personal property: Varies by value\n- Home business: $200-500/year\n- Equipment breakdown: $40-80/year\n- Increased jewelry limit: $20-50/year per $1,000",
+      "keywords": [
+        "not covered",
+        "exclusions",
+        "flood",
+        "earthquake",
+        "what doesn't cover",
+        "mold",
+        "water damage"
+      ],
+      "priority": "high"
+    },
+    {
+      "question": "What is replacement cost versus actual cash value coverage?",
+      "answer": "This is a crucial difference that affects how much you receive after a claim:\n\nREPLACEMENT COST (RC) - RECOMMENDED:\nWhat it means:\n- Pays to replace/repair with new items of similar kind and quality\n- NO deduction for depreciation\n- You get what it costs to rebuild/replace TODAY\n\nExample claim:\n- 10-year-old roof damaged (original cost $15,000)\n- Current replacement cost: $20,000\n- RC policy pays: $20,000 (minus deductible)\n\nCost: 10-15% higher premium than ACV\nBest for: Primary homes, newer properties\n\nACTUAL CASH VALUE (ACV):\nWhat it means:\n- Pays replacement cost MINUS depreciation\n- Factors in age, condition, wear and tear\n- Settlement is typically much lower\n\nSame example:\n- 10-year-old roof (50% depreciated)\n- Replacement cost: $20,000\n- Depreciation: -$10,000\n- ACV policy pays: $10,000 (minus deductible)\n\nCost: Lower premium (10-15% less than RC)\nBest for: Investment properties, vacation homes\n\nOUR RECOMMENDATION:\nDwelling (home structure): REPLACEMENT COST\n- Critical to rebuild your home properly\n- Most lenders require this\n- Guaranteed replacement cost available (pays over limit if costs rise)\n\nPersonal Property: REPLACEMENT COST\n- Upgrade from standard ACV for ~$50/year\n- Example: 5-year-old TV stolen\n  * ACV: Pays depreciated value (~$200)\n  * RC: Pays to buy new equivalent (~$600)\n\nKEY CONSIDERATIONS:\n- Replacement Cost Guarantee: Pays up to 125-150% of dwelling limit\n- Extended Replacement Cost: Pays 25-50% over limit\n- Helpful when construction costs spike after disasters\n- All our standard policies include RC on dwelling\n- Personal property RC is optional upgrade",
+      "keywords": [
+        "replacement cost",
+        "actual cash value",
+        "ACV",
+        "RCV",
+        "depreciation",
+        "payout"
+      ],
+      "priority": "high"
+    },
+    {
+      "question": "How much homeowners insurance do I need?",
+      "answer": "Determining the right coverage amount is critical. Here's how we calculate it:\n\nDWELLING COVERAGE (Most Important):\nBased on REPLACEMENT COST, not market value or mortgage amount.\n\nHow we calculate:\n1. Home square footage × Local rebuild cost per sq ft\n2. Typical rebuild cost: $150-$300+ per sq ft\n3. Factors: Materials, labor, architecture, features\n\nExample:\n- 2,500 sq ft home\n- Local rebuild cost: $200/sq ft\n- Recommended dwelling coverage: $500,000\n\nNote: Market value ($400K) and mortgage ($300K) are irrelevant\n\nOTHER COVERAGES (Auto-calculated from dwelling):\n- Other Structures: 10% of dwelling ($50K)\n- Personal Property: 50-70% of dwelling ($250-350K)\n- Loss of Use: 20-30% of dwelling ($100-150K)\n\nLIABILITY COVERAGE:\nRecommended minimum: $300,000\nBetter protection: $500,000\nBest: $1,000,000 (only ~$50 more per year)\n\nConsider umbrella policy if:\n- Net worth over $500K\n- You own rental properties\n- You have a pool, trampoline, or aggressive dog\n- Teens drivers in household\n- Cost: $200-400/year for $1-2M additional coverage\n\nADJUST COVERAGE FOR:\nIncrease if you have:\n- High-end finishes (granite, hardwood, custom cabinets)\n- Swimming pool or expensive landscaping\n- Detached garage or workshop\n- Home office with expensive equipment\n- Valuable jewelry, art, or collectibles\n\nDecrease factors:\n- Basic finishes\n- Smaller home\n- Minimal landscaping\n- No detached structures\n\nTOOLS WE PROVIDE:\n- Free replacement cost estimator (online or by phone)\n- Annual coverage review reminder\n- Automatic inflation protection (coverage increases 2-4% yearly)\n\nWARNING SIGNS YOU'RE UNDERINSURED:\n- Coverage hasn't been updated in 3+ years\n- You've done major renovations\n- Your coverage equals your mortgage amount\n- Local construction costs have spiked\n\nWe'll review your coverage free annually to ensure adequate protection.",
+      "keywords": [
+        "how much coverage",
+        "coverage amount",
+        "dwelling coverage",
+        "how much insurance",
+        "enough coverage"
+      ],
+      "priority": "high"
+    },
+    {
+      "question": "What home insurance discounts do you offer?",
+      "answer": "We offer extensive discounts to help you save on homeowners insurance:\n\nSECURITY DISCOUNTS:\n- Burglar alarm (monitored): 10-15% off\n- Fire alarm (monitored): 10-15% off\n- Smoke detectors (all floors): 5% off\n- Deadbolt locks: 5% off\n- Security cameras: 5% off\n- Gated community: 5-10% off\n- Combine all: Up to 25% total savings\n\nSAFETY UPDATES:\n- New roof (under 10 years): 10-20% off\n- Updated electrical: 10% off\n- Updated plumbing: 10% off\n- Storm shutters/impact windows: 5-15% off (hurricane zones)\n- New HVAC: 5% off\n\nPOLICY DISCOUNTS:\n- Multi-policy (home + auto): 15-25% off both policies\n- Claims-free (3+ years): 10-20% off\n- Claims-free (5+ years): 20-30% off\n- Loyalty (5+ years): 5-10% off\n- Pay-in-full (annual): 8% off\n- Paperless billing: 5% off\n- Auto-pay: 3% off\n\nHOME CHARACTERISTICS:\n- New home (built within 10 years): 10-15% off\n- Gated community: 5-10% off\n- Fire hydrant within 1,000 feet: 5% off\n- Fire station within 5 miles: 3-5% off\n- Wildfire-resistant materials: 10% off (applicable areas)\n\nPERSONAL DISCOUNTS:\n- Senior (55+): 10% off\n- Retiree (home during day): 5-10% off\n- Non-smoker: 5% off\n- Professional groups (military, teachers): 5-15% off\n- Good credit score (700+): 10-20% off\n\nSPECIAL PROGRAMS:\n- New customer: First year 15% off\n- Refer a friend: $50 credit per referral\n- Smart home discount: 5% (smart locks, thermostat, water sensors)\n\nMAXIMUM SAVINGS EXAMPLE:\n- Base premium: $1,500/year\n- Multi-policy bundle: -$300 (20%)\n- Security system: -$150 (10%)\n- Claims-free 5 years: -$150 (10%)\n- New roof: -$150 (10%)\n- Pay-in-full: -$120 (8%)\n- Total savings: -$870\n- Final premium: $630/year (58% savings!)\n\nNote: Discounts vary by state. Maximum total discount typically 50-60%.",
+      "keywords": [
+        "discounts",
+        "save money",
+        "cheaper",
+        "reduce premium",
+        "lower cost",
+        "deals"
+      ],
+      "priority": "medium"
+    },
+    {
+      "question": "Do I need flood insurance?",
+      "answer": "Flood insurance is a separate policy from homeowners insurance. Here's what you need to know:\n\nWHO NEEDS FLOOD INSURANCE:\nHigh-risk areas (required by lenders):\n- Special Flood Hazard Areas (SFHA / Zone A or V)\n- 100-year flood plain\n- Near rivers, lakes, coasts\n- Mandatory if you have a mortgage\n\nModerate-to-low risk (strongly recommended):\n- 25-30% of flood claims come from low-risk areas\n- Flash floods can happen anywhere\n- Even slight elevation changes matter\n\nCOVERAGE DETAILS:\nBuilding Coverage:\n- Maximum: $250,000 for dwelling\n- Covers: Structure, foundation, electrical, plumbing, HVAC\n- Cost: $400-$2,000/year (avg $700/year)\n\nContents Coverage:\n- Maximum: $100,000 for personal property\n- Separate from building coverage\n- Must be purchased in addition\n- Cost: $200-800/year additional\n\nDeductibles:\n- Options: $1,000 to $10,000\n- Separate for building and contents\n- Higher deductible = Lower premium\n\nWHAT'S COVERED:\n✓ Structure of home\n✓ Electrical and plumbing systems\n✓ HVAC and water heater\n✓ Built-in appliances\n✓ Personal belongings (if contents coverage purchased)\n✓ Basement items (limited coverage)\n\nWHAT'S NOT COVERED:\n✗ Additional living expenses\n✗ Swimming pools\n✗ Landscaping\n✗ Septic systems\n✗ Wells\n✗ Currency, precious metals\n\nIMPORTANT NOTES:\n- 30-day waiting period before coverage starts\n- Buy before storm is named/forecasted\n- Available through NFIP or private insurers\n- We can quote and bind coverage\n\nPRIVATE FLOOD vs NFIP:\nNFIP (National Flood Insurance Program):\n- Maximum $250K building / $100K contents\n- Standard rates\n- Government-backed\n\nPrivate Flood Insurance:\n- Higher limits available (up to $2-4M)\n- Often cheaper in low-risk areas\n- More coverage options\n- We offer both - we'll quote best option\n\nCHECK YOUR RISK:\n- Free flood map check at www.floodsmart.gov\n- Enter your address\n- See your flood zone\n- Call us for personalized quote: 1-800-INSURANCE\n\nEven in low-risk areas, consider coverage:\n- Just 1 inch of water causes $25,000 damage average\n- Federal disaster aid is typically a loan (must repay)\n- Flood insurance pays you to rebuild (don't repay)",
+      "keywords": [
+        "flood insurance",
+        "flood coverage",
+        "NFIP",
+        "flood zone",
+        "water damage",
+        "flooding"
+      ],
+      "priority": "medium"
+    }
+  ]
+}

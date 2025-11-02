@@ -50,11 +50,18 @@ virtualenv/
 *.sublime-workspace
 .history/
 
-# Database Files
+# Database files
 *.db
 *.sqlite
 *.sqlite3
 insurance_assistant.db
+
+# Knowledge base (company-specific - keep template, ignore actual data)
+# knowledge_base/*.json
+# knowledge_base/products/*.json
+# knowledge_base/policies/*.json
+# !knowledge_base/README.md
+# !knowledge_base/.gitkeep
 
 # Logs
 *.log
