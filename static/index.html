@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Lady - Insurance Assistant</title>
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>💬</text></svg>"
+    />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Google Material Icons -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="brand">
+          <div class="brand-icon">
+            <span class="material-icons">chat</span>
+          </div>
+          <div class="brand-text">
+            <h1>AI Lady</h1>
+            <p>Insurance Assistant</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <!-- Status Button -->
+          <button class="status-btn" id="statusBtn" aria-label="System Status">
+            <span class="material-icons">info</span>
+            <div class="status-indicator" id="statusIndicator"></div>
+            <div class="status-tooltip" id="statusTooltip">
+              <h3>System Status</h3>
+              <div id="statusContent">
+                <div class="status-item">
+                  <span>Loading...</span>
+                </div>
+              </div>
+            </div>
+          </button>
+          <!-- Theme Toggle -->
+          <button
+            class="theme-toggle"
+            id="themeToggle"
+            aria-label="Toggle theme"
+          >
+            <span class="material-icons" id="themeIcon">dark_mode</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+      <div class="chat-container">
+        <!-- Chat Area -->
+        <div class="chat-area" id="chatArea">
+          <div class="message bot">
+            <div class="message-avatar">
+              <span class="material-icons">smart_toy</span>
+            </div>
+            <div class="message-content">
+              <div>
+                Hello! I'm AI Lady, your trusted insurance assistant. I'm here
+                to help you with:
+              </div>
+              <br />
+              <div>• Life, Health, Auto, and Home Insurance</div>
+              <div>• Claims and Policy Information</div>
+              <div>• Renewals and Updates</div>
+              <br />
+              <div>How may I assist you today?</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+          <div class="quick-actions-grid">
+            <button
+              class="quick-btn"
+              onclick="sendQuickQuestion('What is term life insurance?')"
+              aria-label="Ask about term life insurance"
+            >
+              <span class="material-icons">paid</span> Term Life
+            </button>
+            <button
+              class="quick-btn"
+              onclick="sendQuickQuestion('How do I file a claim?')"
+              aria-label="Ask about filing a claim"
+            >
+              <span class="material-icons">description</span> File Claim
+            </button>
+            <button
+              class="quick-btn"
+              onclick="sendQuickQuestion('What is a health insurance deductible?')"
+              aria-label="Ask about health insurance deductible"
+            >
+              <span class="material-icons">local_hospital</span> Deductible Info
+            </button>
+            <button
+              class="quick-btn"
+              onclick="sendQuickQuestion('How do I renew my policy?')"
+              aria-label="Ask about policy renewal"
+            >
+              <span class="material-icons">refresh</span> Renew Policy
+            </button>
+          </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-area">
+          <div id="filePreviewContainer"></div>
+          <div class="input-wrapper">
+            <div class="input-container">
+              <textarea
+                id="messageInput"
+                placeholder="Type your question here..."
+                rows="1"
+                aria-label="Message input"
+              ></textarea>
+              <div class="input-actions">
+                <button
+                  class="input-btn"
+                  id="attachBtn"
+                  title="Attach file (Coming soon)"
+                  aria-label="Attach file"
+                >
+                  <span class="material-icons">attach_file</span>
+                </button>
+              </div>
+              <input
+                type="file"
+                id="fileInput"
+                accept=".pdf,.doc,.docx,.txt,.jpg,.png"
+                aria-label="File input"
+              />
+            </div>
+            <button class="send-btn" id="sendBtn" aria-label="Send message">
+              <span id="sendBtnText">
+                <span class="material-icons">send</span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div>
+          &copy; 2025 AI Lady - Insurance Assistant. All rights reserved.
+        </div>
+        <div class="footer-links">
+          <a href="#" aria-label="Privacy Policy">Privacy</a>
+          <a href="#" aria-label="Terms of Service">Terms</a>
+          <a href="#" aria-label="Contact Support">Contact</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+  </body>
+</html>

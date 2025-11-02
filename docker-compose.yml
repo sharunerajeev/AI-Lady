@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  # FastAPI Backend with Integrated Web UI
+  app:
+    build: .
+    container_name: insurance_assistant
+    ports:
+      - "8000:8000"
+    environment:
+      # AI Provider Configuration
+      - MODEL_PROVIDER=${MODEL_PROVIDER:-ollama}
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-phi3:mini}
+      
+      # Azure OpenAI (if using)
+      - AZURE_OPENAI_API_KEY=${AZURE_OPENAI_API_KEY}
+      - AZURE_OPENAI_ENDPOINT=${AZURE_OPENAI_ENDPOINT}
+      - AZURE_OPENAI_DEPLOYMENT=${AZURE_OPENAI_DEPLOYMENT}
+      
+      # Application Settings
+      - DATABASE_URL=sqlite+aiosqlite:///./data/insurance_assistant.db
+      - HOST=0.0.0.0
+      - PORT=8000
+      - DEBUG=${DEBUG:-False}
+    volumes:
+      - ./data:/app/data
+      - ./insurance_assistant.db:/app/insurance_assistant.db
+      - ./static:/app/static
+    command: python main.py
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - insurance_network
+    restart: unless-stopped
+
+networks:
+  insurance_network:
+    driver: bridge
+
+volumes:
+  data:

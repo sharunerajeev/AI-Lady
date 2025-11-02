@@ -1,0 +1,121 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+*.pyc
+
+# Virtual Environments
+venv/
+env/
+ENV/
+.venv/
+virtualenv/
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# IDE & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.history/
+
+# Database Files
+*.db
+*.sqlite
+*.sqlite3
+insurance_assistant.db
+
+# Logs
+*.log
+logs/
+/tmp/
+*.tmp
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Docker
+*.pid
+*.seed
+*.pid.lock
+docker-compose.override.yml
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+.hypothesis/
+
+# Backup Files
+*.backup
+*.bak
+*~
+*.swp
+*.swo
+
+# Temporary Files
+*.tmp
+temp/
+tmp/
+*.temp
+
+# Node (if any frontend tooling is added later)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Production Build
+/build/
+/dist/
+
+# Sensitive Data
+*.key
+*.pem
+*.crt
+secrets/
+
+# Local Configuration
+local_settings.py
+.local/
