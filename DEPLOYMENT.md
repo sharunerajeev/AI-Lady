@@ -254,7 +254,7 @@ python main.py
 2. **Access the Web UI:**
 
    - Open browser: http://localhost:8000/static/index.html
-   - You should see the AI Lady interface
+   - You should see the AI Avustaa interface
    - Try the quick action buttons
    - Toggle light/dark theme
 

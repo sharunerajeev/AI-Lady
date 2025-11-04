@@ -1,6 +1,6 @@
 # Knowledge Base Management
 
-This directory contains the insurance company's knowledge base that powers AI Lady's responses.
+This directory contains the insurance company's knowledge base that powers AI Avustaa's responses.
 
 ## 📁 Structure
 
@@ -22,7 +22,7 @@ knowledge_base/
 
 ### Option 1: Edit JSON Files (Recommended)
 
-Each JSON file contains structured information that AI Lady uses to answer questions.
+Each JSON file contains structured information that AI Avustaa uses to answer questions.
 
 **Format:**
 

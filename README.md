@@ -1,4 +1,4 @@
-# 🤖 AI Insurance Assistant (AI Lady)
+# 🤖 AI Insurance Assistant (AI Avustaa)
 
 An AI-powered insurance assistant chatbot built with FastAPI and modern web technologies. This POC demonstrates customer support capabilities for insurance companies with a beautiful, responsive UI.
 
@@ -298,7 +298,7 @@ Once the application is running, visit:
 
 ## 💬 Sample Questions
 
-Try asking the AI Lady:
+Try asking the AI Avustaa:
 
 - "What is term life insurance?"
 - "How do I file an insurance claim?"

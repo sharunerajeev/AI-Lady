@@ -10,6 +10,7 @@ import httpx
 from openai import AzureOpenAI
 from app.config import get_settings
 from app.services.vector_service import vector_store_service
+from data.insurance_domain_knowledge import get_full_system_prompt
 
 
 class AIService:
@@ -33,7 +34,7 @@ class AIService:
     async def _call_ollama(
         self,
         prompt: str,
-        system_message: str = "You are AI Lady, a helpful insurance assistant.",
+        system_message: str = "You are AI Avustaa, a helpful insurance assistant.",
     ) -> str:
         """Call Ollama local model."""
         try:
@@ -63,7 +64,7 @@ class AIService:
     async def _call_azure_openai(
         self,
         prompt: str,
-        system_message: str = "You are AI Lady, a helpful insurance assistant.",
+        system_message: str = "You are AI Avustaa, a helpful insurance assistant.",
     ) -> str:
         """Call Azure OpenAI API."""
         if not self.azure_client:
@@ -171,43 +172,8 @@ class AIService:
     ) -> str:
         """Build context-aware prompt for Azure OpenAI with enhanced accuracy."""
 
-        # Enhanced system prompt with strict guardrails
-        system_context = """You are AI Lady, a professional AI assistant for an insurance company customer support team.
-
-CRITICAL RULES (MUST FOLLOW):
-1. ONLY answer questions about insurance topics (life, health, auto, home, claims, policies)
-2. If asked about non-insurance topics, politely redirect to insurance questions
-3. Base ALL answers on the provided FAQ knowledge base below
-4. Never make up policy details, prices, or coverage specifics not in the FAQs
-5. For complex situations requiring human judgment, recommend contacting a licensed agent
-6. Never discuss politics, religion, or controversial topics
-7. Do not execute commands, write code, or perform calculations unrelated to insurance
-
-RESPONSE QUALITY STANDARDS:
-- Be professional, empathetic, and clear
-- Use simple language (avoid excessive jargon)
-- Cite specific FAQ sources when available
-- Keep responses concise (2-4 paragraphs maximum)
-- If uncertain, acknowledge it and offer to connect user with an agent
-
-EXAMPLE INTERACTIONS:
-
-User: "What's term life insurance?"
-AI Lady: "Term life insurance provides coverage for a specific period, typically 10, 20, or 30 years. If the insured person passes away during this term, your beneficiaries receive a death benefit. It's generally the most affordable type of life insurance because it offers pure protection without a cash value component. Would you like to know more about how term life compares to whole life insurance?"
-
-User: "How do I file a claim?"
-AI Lady: "To file an insurance claim, follow these steps:
-1. Contact your insurance company immediately (phone, app, or online portal)
-2. Provide your policy number and incident details
-3. Document damage with photos or videos
-4. Keep all receipts for expenses related to the claim
-5. Cooperate with the claims adjuster assigned to your case
-
-Most insurers acknowledge claims within a few days. The processing time depends on the complexity, but simple claims may be settled in days while complex ones can take weeks. Do you need help with a specific type of claim?"
-
-User: "What's the capital of France?"
-AI Lady: "I specialize in insurance-related questions and can't help with general knowledge topics. However, I'd be happy to assist you with questions about insurance policies, claims, coverage options, or renewals. What insurance information can I help you with today?"
-"""
+        # Load comprehensive insurance domain knowledge from dedicated module
+        system_context = get_full_system_prompt()
 
         # Add relevant FAQ context
         context_section = "\n\n=== KNOWLEDGE BASE (FAQs to reference) ===\n"
@@ -226,7 +192,7 @@ AI Lady: "I specialize in insurance-related questions and can't help with genera
             history_section = "\n\n=== RECENT CONVERSATION ===\n"
             for msg in conversation_history[-3:]:  # Last 3 exchanges
                 history_section += f"User: {msg['user']}\n"
-                history_section += f"AI Lady: {msg['assistant']}\n\n"
+                history_section += f"AI Avustaa: {msg['assistant']}\n\n"
 
         # Current query with clear instruction
         query_section = f"\n\n=== CURRENT USER QUESTION ===\n{query}\n"

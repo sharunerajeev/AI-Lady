@@ -101,7 +101,7 @@ similar_faqs = vector_store_service.search_similar(query, n_results=5)
 Build prompt with:
 
 ```
-SYSTEM: You are AI Lady, insurance assistant...
+SYSTEM: You are AI Avustaa, insurance assistant...
 CRITICAL RULES: [guardrails]
 EXAMPLE INTERACTIONS: [few-shot examples]
 

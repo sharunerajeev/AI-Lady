@@ -12,7 +12,7 @@
 
 ```bash
 # Navigate to project directory
-cd "AI Lady"
+cd "AI Avustaa"
 
 # Create .env file
 cp .env.example .env
