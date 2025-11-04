@@ -5,6 +5,7 @@ const state = {
   theme: localStorage.getItem("theme") || "light",
   attachedFile: null,
   systemStatus: null,
+  widgetState: localStorage.getItem("widgetState") || "icon", // icon, popup, fullscreen
 };
 
 // API Configuration
@@ -13,10 +14,80 @@ const API_BASE_URL = "http://localhost:8000/api/v1";
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
+  initWidgetState();
   initEventListeners();
   checkSystemStatus();
   autoResizeTextarea();
+  initIframeLoading();
 });
+
+// Widget State Management
+function initWidgetState() {
+  // Default to icon state always - don't load from localStorage
+  setWidgetState("icon");
+}
+
+function setWidgetState(newState) {
+  const validStates = ["icon", "popup", "fullscreen"];
+  if (!validStates.includes(newState)) {
+    newState = "icon";
+  }
+
+  state.widgetState = newState;
+  localStorage.setItem("widgetState", newState);
+
+  // Update body class
+  document.body.className = "";
+  if (newState === "popup") {
+    document.body.classList.add("chat-popup");
+  } else if (newState === "fullscreen") {
+    document.body.classList.add("chat-fullscreen");
+  }
+
+  // Update widget class
+  const widget = document.getElementById("chatWidget");
+  widget.className = "chat-widget";
+  if (newState !== "icon") {
+    widget.classList.add(`state-${newState}`);
+  }
+
+  // Update maximize button icon
+  const maximizeBtn = document.getElementById("maximizeBtn");
+  if (maximizeBtn) {
+    const icon = maximizeBtn.querySelector(".material-icons");
+    if (newState === "fullscreen") {
+      icon.textContent = "fullscreen_exit";
+      maximizeBtn.title = "Exit Fullscreen";
+    } else {
+      icon.textContent = "fullscreen";
+      maximizeBtn.title = "Fullscreen";
+    }
+  }
+}
+
+function openPopup() {
+  setWidgetState("popup");
+}
+
+function togglePopup() {
+  if (state.widgetState === "popup") {
+    setWidgetState("icon");
+  } else {
+    setWidgetState("popup");
+  }
+}
+
+function minimizeWidget() {
+  setWidgetState("icon");
+}
+
+function toggleFullscreen() {
+  if (state.widgetState === "fullscreen") {
+    setWidgetState("popup");
+  } else {
+    setWidgetState("fullscreen");
+  }
+}
 
 // Theme Management
 function initTheme() {
@@ -43,19 +114,51 @@ function initEventListeners() {
   const themeToggle = document.getElementById("themeToggle");
   const attachBtn = document.getElementById("attachBtn");
   const fileInput = document.getElementById("fileInput");
+  
+  // Widget controls
+  const chatFloatIcon = document.getElementById("chatFloatIcon");
+  const minimizeBtn = document.getElementById("minimizeBtn");
+  const maximizeBtn = document.getElementById("maximizeBtn");
+  const closeBtn = document.getElementById("closeBtn");
+  const exitFullscreenBtn = document.getElementById("exitFullscreenBtn");
 
   messageInput.addEventListener("keydown", handleKeyDown);
   messageInput.addEventListener("input", autoResizeTextarea);
   sendBtn.addEventListener("click", sendMessage);
   themeToggle.addEventListener("click", toggleTheme);
 
-  // File attachment (for future use)
-  attachBtn.addEventListener("click", () => {
-    showToast("File attachment feature coming soon!", "info", "attach_file");
-    // fileInput.click(); // Enable when ready
-  });
+  // Widget event listeners
+  chatFloatIcon.addEventListener("click", togglePopup);
+  minimizeBtn.addEventListener("click", minimizeWidget);
+  maximizeBtn.addEventListener("click", toggleFullscreen);
+  closeBtn.addEventListener("click", minimizeWidget);
+  exitFullscreenBtn.addEventListener("click", () => setWidgetState("popup"));
 
-  fileInput.addEventListener("change", handleFileSelect);
+  // File attachment (for future use)
+  if (attachBtn) {
+    attachBtn.addEventListener("click", () => {
+      showToast("File attachment feature coming soon!", "info", "attach_file");
+      // fileInput.click(); // Enable when ready
+    });
+  }
+
+  if (fileInput) {
+    fileInput.addEventListener("change", handleFileSelect);
+  }
+  
+  // Keyboard shortcuts
+  document.addEventListener("keydown", handleGlobalKeyDown);
+}
+
+function handleGlobalKeyDown(event) {
+  // ESC key to minimize widget
+  if (event.key === "Escape") {
+    if (state.widgetState === "fullscreen") {
+      setWidgetState("popup");
+    } else if (state.widgetState === "popup") {
+      minimizeWidget();
+    }
+  }
 }
 
 function handleKeyDown(event) {
@@ -423,3 +526,23 @@ function escapeHtml(text) {
 
 // Periodic status check
 setInterval(checkSystemStatus, 30000); // Check every 30 seconds
+
+// Iframe Loading Management
+function initIframeLoading() {
+  const iframe = document.getElementById('backgroundWebsite');
+  const chatFloatIcon = document.getElementById('chatFloatIcon');
+  
+  // Show icon after iframe loads
+  iframe.addEventListener('load', () => {
+    setTimeout(() => {
+      chatFloatIcon.classList.add('loaded');
+    }, 500); // Small delay for smooth appearance
+  });
+  
+  // Fallback: show icon after 3 seconds if iframe doesn't load
+  setTimeout(() => {
+    if (!chatFloatIcon.classList.contains('loaded')) {
+      chatFloatIcon.classList.add('loaded');
+    }
+  }, 3000);
+}

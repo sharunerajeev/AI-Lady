@@ -38,110 +38,178 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <!-- Header -->
-    <header class="header">
-      <div class="header-content">
-        <div class="brand">
-          <div class="brand-icon">
+    <!-- Background Website (Demo Integration) -->
+    <iframe 
+      id="backgroundWebsite" 
+      src="https://www.lahitapiola.fi/en/personal/" 
+      class="background-website"
+      title="Demo Website"
+    ></iframe>
+
+    <!-- Floating Chat Icon (always visible) -->
+    <button class="chat-float-icon" id="chatFloatIcon" aria-label="Toggle chat">
+      <img src="assets/ai_assist_logo.png" alt="AI Avustaa" class="chat-icon-img" />
+      <span class="chat-icon-text">Chat with AI Avustaa</span>
+    </button>
+
+    <!-- Chat Widget Wrapper -->
+    <div class="chat-widget" id="chatWidget">
+      <!-- Widget Header (for popup mode) -->
+      <div class="widget-header">
+        <div class="widget-brand">
+          <div class="widget-brand-icon">
             <img
               src="assets/ai_assist_logo.png"
-              alt="AI Avustaa logo"
+              alt="AI Avustaa"
               class="logo-image"
-              width="100%"
-              height="auto"
-              loading="lazy"
             />
           </div>
-          <div class="brand-text">
-            <h1>AI Avustaa</h1>
+          <div class="widget-brand-text">
+            <h2>AI Avustaa</h2>
             <p>Insurance Assistant</p>
           </div>
         </div>
-        <div class="header-actions">
-          <!-- Status Button -->
-          <button class="status-btn" id="statusBtn" aria-label="System Status">
-            <span class="material-icons">info</span>
-            <div class="status-indicator" id="statusIndicator"></div>
-            <div class="status-tooltip" id="statusTooltip">
-              <h3>System Status</h3>
-              <div id="statusContent">
-                <div class="status-item">
-                  <span>Loading...</span>
-                </div>
-              </div>
-            </div>
-          </button>
-          <!-- Theme Toggle -->
+        <div class="widget-controls">
           <button
-            class="theme-toggle"
-            id="themeToggle"
-            aria-label="Toggle theme"
+            class="widget-control-btn"
+            id="minimizeBtn"
+            aria-label="Minimize"
+            title="Minimize"
           >
-            <span class="material-icons" id="themeIcon">dark_mode</span>
+            <span class="material-icons">minimize</span>
+          </button>
+          <button
+            class="widget-control-btn"
+            id="maximizeBtn"
+            aria-label="Maximize"
+            title="Fullscreen"
+          >
+            <span class="material-icons">fullscreen</span>
+          </button>
+          <button
+            class="widget-control-btn"
+            id="closeBtn"
+            aria-label="Close"
+            title="Close"
+          >
+            <span class="material-icons">close</span>
           </button>
         </div>
       </div>
-    </header>
 
-    <!-- Main Container -->
-    <div class="container">
-      <div class="chat-container">
-        <!-- Chat Area -->
-        <div class="chat-area" id="chatArea">
-          <div class="message bot">
-            <div class="message-avatar">
-              <span class="material-icons">smart_toy</span>
+      <!-- Fullscreen Header (only visible in fullscreen mode) -->
+      <header class="header fullscreen-only">
+        <div class="header-content">
+          <div class="brand">
+            <div class="brand-icon">
+              <img
+                src="assets/ai_assist_logo.png"
+                alt="AI Avustaa logo"
+                class="logo-image"
+                width="100%"
+                height="auto"
+                loading="lazy"
+              />
             </div>
-            <div class="message-content">
-              <div>
-                Hello! I'm AI Avustaa, your trusted insurance assistant. I'm
-                here to help you with:
+            <div class="brand-text">
+              <h1>AI Avustaa</h1>
+              <p>Insurance Assistant</p>
+            </div>
+          </div>
+          <div class="header-actions">
+            <!-- Status Button -->
+            <button class="status-btn" id="statusBtn" aria-label="System Status">
+              <span class="material-icons">info</span>
+              <div class="status-indicator" id="statusIndicator"></div>
+              <div class="status-tooltip" id="statusTooltip">
+                <h3>System Status</h3>
+                <div id="statusContent">
+                  <div class="status-item">
+                    <span>Loading...</span>
+                  </div>
+                </div>
               </div>
-              <br />
-              <div>• Life, Health, Auto, and Home Insurance</div>
-              <div>• Claims and Policy Information</div>
-              <div>• Renewals and Updates</div>
-              <br />
-              <div>How may I assist you today?</div>
+            </button>
+            <!-- Theme Toggle -->
+            <button
+              class="theme-toggle"
+              id="themeToggle"
+              aria-label="Toggle theme"
+            >
+              <span class="material-icons" id="themeIcon">dark_mode</span>
+            </button>
+            <!-- Exit Fullscreen Button -->
+            <button
+              class="theme-toggle"
+              id="exitFullscreenBtn"
+              aria-label="Exit fullscreen"
+              title="Exit Fullscreen"
+            >
+              <span class="material-icons">fullscreen_exit</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Container -->
+      <div class="container">
+        <div class="chat-container">
+          <!-- Chat Area -->
+          <div class="chat-area" id="chatArea">
+            <div class="message bot">
+              <div class="message-avatar">
+                <span class="material-icons">smart_toy</span>
+              </div>
+              <div class="message-content">
+                <div>
+                  Hello! I'm <strong>AI Avustaa</strong>, your insurance assistant.
+                </div>
+                <div class="fullscreen-only">
+                  <br />
+                  <div>I'm here to help you with:</div>
+                  <div>• Life, Health, Auto, and Home Insurance</div>
+                  <div>• Claims and Policy Information</div>
+                  <div>• Renewals and Updates</div>
+                  <br />
+                </div>
+                <div>How may I assist you today?</div>
+              </div>
+            </div>
+          </div>          <!-- Quick Actions (only in fullscreen) -->
+          <div class="quick-actions fullscreen-only">
+            <div class="quick-actions-grid">
+              <button
+                class="quick-btn"
+                onclick="sendQuickQuestion('What is term life insurance?')"
+                aria-label="Ask about term life insurance"
+              >
+                <span class="material-icons">paid</span> Term Life
+              </button>
+              <button
+                class="quick-btn"
+                onclick="sendQuickQuestion('How do I file a claim?')"
+                aria-label="Ask about filing a claim"
+              >
+                <span class="material-icons">description</span> File Claim
+              </button>
+              <button
+                class="quick-btn"
+                onclick="sendQuickQuestion('What is a health insurance deductible?')"
+                aria-label="Ask about health insurance deductible"
+              >
+                <span class="material-icons">local_hospital</span> Deductible Info
+              </button>
+              <button
+                class="quick-btn"
+                onclick="sendQuickQuestion('How do I renew my policy?')"
+                aria-label="Ask about policy renewal"
+              >
+                <span class="material-icons">refresh</span> Renew Policy
+              </button>
             </div>
           </div>
-        </div>
 
-        <!-- Quick Actions -->
-        <div class="quick-actions">
-          <div class="quick-actions-grid">
-            <button
-              class="quick-btn"
-              onclick="sendQuickQuestion('What is term life insurance?')"
-              aria-label="Ask about term life insurance"
-            >
-              <span class="material-icons">paid</span> Term Life
-            </button>
-            <button
-              class="quick-btn"
-              onclick="sendQuickQuestion('How do I file a claim?')"
-              aria-label="Ask about filing a claim"
-            >
-              <span class="material-icons">description</span> File Claim
-            </button>
-            <button
-              class="quick-btn"
-              onclick="sendQuickQuestion('What is a health insurance deductible?')"
-              aria-label="Ask about health insurance deductible"
-            >
-              <span class="material-icons">local_hospital</span> Deductible Info
-            </button>
-            <button
-              class="quick-btn"
-              onclick="sendQuickQuestion('How do I renew my policy?')"
-              aria-label="Ask about policy renewal"
-            >
-              <span class="material-icons">refresh</span> Renew Policy
-            </button>
-          </div>
-        </div>
-
-        <!-- Input Area -->
+          <!-- Input Area -->        <!-- Input Area -->
         <div class="input-area">
           <div id="filePreviewContainer"></div>
           <div class="input-wrapper">
@@ -179,8 +247,8 @@
       </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
+    <!-- Footer (only in fullscreen) -->
+    <footer class="footer fullscreen-only">
       <div class="footer-content">
         <div>
           &copy; 2025 AI Avustaa - Insurance Assistant. All rights reserved.
