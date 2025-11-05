@@ -328,7 +328,10 @@ function addMessage(type, content, metadata = null) {
   contentDiv.className = "message-content";
 
   const textDiv = document.createElement("div");
-  textDiv.innerHTML = escapeHtml(content).replace(/\n/g, "<br>");
+  
+  // Format message content (support markdown-style formatting)
+  const formattedContent = formatMessageContent(content);
+  textDiv.innerHTML = formattedContent;
   contentDiv.appendChild(textDiv);
 
   // Add metadata tooltip for bot messages
@@ -522,6 +525,36 @@ function escapeHtml(text) {
   const div = document.createElement("div");
   div.textContent = text;
   return div.innerHTML;
+}
+
+function formatMessageContent(content) {
+  // Escape HTML first
+  let formatted = escapeHtml(content);
+  
+  // Format bold text (**text** -> <strong>text</strong>)
+  formatted = formatted.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  
+  // Format bullet points (• or - at start of line)
+  formatted = formatted.replace(/^[•\-]\s+(.+)$/gm, '<div style="margin-left: 20px;">• $1</div>');
+  
+  // Format numbered lists
+  formatted = formatted.replace(/^(\d+)\.\s+(.+)$/gm, '<div style="margin-left: 20px;">$1. $2</div>');
+  
+  // Format section headers (🎯, 📋, ✅, 📌, 💡, etc. at start)
+  formatted = formatted.replace(/^([🎯📋✅📌💡🥇🥈🥉📊💰🛡️]+)\s+\*\*([^*]+)\*\*/gm, 
+    '<div style="margin-top: 12px; margin-bottom: 8px; font-weight: bold;">$1 $2</div>');
+  
+  // Format question numbers (e.g., "Question 1 of 5")
+  formatted = formatted.replace(/\*\*Question\s+(\d+)\s+of\s+(\d+)\*\*/g, 
+    '<div style="background: var(--primary-color); color: white; padding: 8px 12px; border-radius: 8px; margin: 8px 0; display: inline-block;"><strong>Question $1 of $2</strong></div>');
+  
+  // Convert newlines to <br>
+  formatted = formatted.replace(/\n/g, '<br>');
+  
+  // Fix nested <div> issues by removing <br> before closing </div>
+  formatted = formatted.replace(/<br><\/div>/g, '</div>');
+  
+  return formatted;
 }
 
 // Periodic status check

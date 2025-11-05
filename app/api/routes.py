@@ -79,14 +79,22 @@ async def chat(request: ChatRequest):
 
         # Get AI response
         ai_response = await ai_service.get_response(
-            request.message, conversation_history, provider=request.provider
+            request.message, 
+            conversation_history, 
+            provider=request.provider,
+            session_id=session_id
         )
 
-        # Save conversation
+        # Save conversation with recommendation flow tracking
+        is_rec_flow = ai_response.get("is_recommendation_flow", False)
+        context_data = ai_response.get("context") if is_rec_flow else None
+        
         await db_service.save_conversation(
             session_id=session_id,
             user_message=request.message,
             assistant_message=ai_response["response"],
+            is_recommendation_flow=is_rec_flow,
+            context_data=context_data
         )
 
         return ChatResponse(
@@ -228,3 +236,125 @@ async def get_knowledge_stats():
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error getting knowledge stats: {str(e)}",
         )
+
+
+# ========== RECOMMENDATION ENDPOINTS ==========
+
+@router.get("/recommendations/{session_id}")
+async def get_recommendation_history(session_id: str, insurance_type: str = None, limit: int = 10):
+    """
+    Get recommendation history for a session.
+    
+    - **session_id**: Session ID to retrieve recommendations for
+    - **insurance_type**: Optional filter by insurance type
+    - **limit**: Maximum number of recommendations to return
+    """
+    try:
+        recommendations = await db_service.get_recommendation_history(
+            session_id, insurance_type, limit
+        )
+        
+        result = []
+        for rec in recommendations:
+            result.append({
+                "id": rec.id,
+                "insurance_type": rec.insurance_type,
+                "product_id": rec.product_id,
+                "product_name": rec.product_name,
+                "match_score": rec.match_score,
+                "match_reasons": rec.match_reasons,
+                "user_requirements": rec.user_requirements,
+                "recommended_at": rec.recommended_at.isoformat(),
+                "user_feedback": rec.user_feedback,
+                "feedback_notes": rec.feedback_notes
+            })
+        
+        return {
+            "session_id": session_id,
+            "recommendations": result,
+            "count": len(result)
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error retrieving recommendations: {str(e)}",
+        )
+
+
+@router.post("/recommendations/{recommendation_id}/feedback")
+async def update_recommendation_feedback(
+    recommendation_id: int, 
+    feedback: str,
+    notes: str = None
+):
+    """
+    Update feedback for a recommendation.
+    
+    - **recommendation_id**: ID of the recommendation
+    - **feedback**: Feedback type (accepted, rejected, pending)
+    - **notes**: Optional feedback notes
+    """
+    if feedback not in ["accepted", "rejected", "pending"]:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Feedback must be 'accepted', 'rejected', or 'pending'"
+        )
+    
+    try:
+        recommendation = await db_service.update_recommendation_feedback(
+            recommendation_id, feedback, notes
+        )
+        
+        if not recommendation:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Recommendation not found"
+            )
+        
+        return {
+            "message": "Feedback saved successfully",
+            "recommendation_id": recommendation_id,
+            "feedback": feedback
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error saving feedback: {str(e)}",
+        )
+
+
+@router.get("/preferences/{session_id}")
+async def get_user_preferences(session_id: str, insurance_type: str = None):
+    """
+    Get saved user preferences.
+    
+    - **session_id**: Session ID
+    - **insurance_type**: Optional filter by insurance type
+    """
+    try:
+        import json
+        preferences = await db_service.get_user_preferences(session_id, insurance_type)
+        
+        result = []
+        for pref in preferences:
+            result.append({
+                "id": pref.id,
+                "insurance_type": pref.insurance_type,
+                "requirements": json.loads(pref.requirements),
+                "created_at": pref.created_at.isoformat(),
+                "updated_at": pref.updated_at.isoformat()
+            })
+        
+        return {
+            "session_id": session_id,
+            "preferences": result,
+            "count": len(result)
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error retrieving preferences: {str(e)}",
+        )
+
