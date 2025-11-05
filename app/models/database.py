@@ -28,7 +28,9 @@ class Conversation(Base):
     )
     rating: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
     # Track if this is part of a recommendation flow
-    is_recommendation_flow: Mapped[Optional[bool]] = mapped_column(Integer, default=0, nullable=True)
+    is_recommendation_flow: Mapped[Optional[bool]] = mapped_column(
+        Integer, default=0, nullable=True
+    )
     context_data: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
     def __repr__(self) -> str:
@@ -71,7 +73,9 @@ class Recommendation(Base):
     recommended_at: Mapped[datetime] = mapped_column(
         DateTime, default=datetime.utcnow, nullable=False
     )
-    user_feedback: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)  # accepted, rejected, pending
+    user_feedback: Mapped[Optional[str]] = mapped_column(
+        String(20), nullable=True
+    )  # accepted, rejected, pending
     feedback_notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
     def __repr__(self) -> str:
@@ -84,12 +88,22 @@ class ConversationContext(Base):
     __tablename__ = "conversation_contexts"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    session_id: Mapped[str] = mapped_column(String(100), nullable=False, unique=True, index=True)
-    current_flow: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)  # recommendation, general_inquiry
+    session_id: Mapped[str] = mapped_column(
+        String(100), nullable=False, unique=True, index=True
+    )
+    current_flow: Mapped[Optional[str]] = mapped_column(
+        String(50), nullable=True
+    )  # recommendation, general_inquiry
     insurance_type: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
-    current_question_index: Mapped[Optional[int]] = mapped_column(Integer, default=0, nullable=True)
-    collected_answers: Mapped[Optional[str]] = mapped_column(Text, nullable=True)  # JSON string
-    awaiting_response_for: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    current_question_index: Mapped[Optional[int]] = mapped_column(
+        Integer, default=0, nullable=True
+    )
+    collected_answers: Mapped[Optional[str]] = mapped_column(
+        Text, nullable=True
+    )  # JSON string
+    awaiting_response_for: Mapped[Optional[str]] = mapped_column(
+        String(100), nullable=True
+    )
     created_at: Mapped[datetime] = mapped_column(
         DateTime, default=datetime.utcnow, nullable=False
     )
