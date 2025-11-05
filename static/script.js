@@ -528,11 +528,46 @@ function escapeHtml(text) {
 }
 
 function formatMessageContent(content) {
-  // Escape HTML first
+  // Configure marked.js for better rendering
+  if (typeof marked !== 'undefined') {
+    marked.setOptions({
+      breaks: true,  // Convert \n to <br>
+      gfm: true,     // GitHub Flavored Markdown
+      headerIds: false,
+      mangle: false,
+      sanitize: false  // We'll use DOMPurify instead
+    });
+    
+    // Use marked.js to parse markdown
+    let html = marked.parse(content);
+    
+    // Sanitize with DOMPurify to prevent XSS
+    if (typeof DOMPurify !== 'undefined') {
+      html = DOMPurify.sanitize(html, {
+        ALLOWED_TAGS: [
+          'p', 'br', 'strong', 'em', 'u', 'code', 'pre',
+          'ul', 'ol', 'li', 'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+          'a', 'table', 'thead', 'tbody', 'tr', 'th', 'td',
+          'div', 'span'
+        ],
+        ALLOWED_ATTR: ['href', 'class', 'style']
+      });
+    }
+    
+    return html;
+  }
+  
+  // Fallback to simple formatting if marked.js not available
   let formatted = escapeHtml(content);
   
   // Format bold text (**text** -> <strong>text</strong>)
   formatted = formatted.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  
+  // Format italic (*text* -> <em>text</em>)
+  formatted = formatted.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  
+  // Format inline code (`code` -> <code>code</code>)
+  formatted = formatted.replace(/`([^`]+)`/g, '<code>$1</code>');
   
   // Format bullet points (• or - at start of line)
   formatted = formatted.replace(/^[•\-]\s+(.+)$/gm, '<div style="margin-left: 20px;">• $1</div>');

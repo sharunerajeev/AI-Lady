@@ -48,9 +48,10 @@ class HealthResponse(BaseModel):
     version: str
     azure_configured: bool
     model_provider: str = Field(..., description="Current model provider")
-    available_providers: Dict[str, bool] = Field(
+    available_providers: Dict[str, Any] = Field(
         default_factory=dict, description="Status of each AI provider"
     )
+    active_model: Optional[str] = Field(None, description="Currently active AI model")
 
 
 class ErrorResponse(BaseModel):

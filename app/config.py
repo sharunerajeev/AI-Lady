@@ -23,19 +23,25 @@ class Settings(BaseSettings):
     ollama_base_url: str = "http://localhost:11434"
     ollama_model: str = "phi3:mini"
 
-    # Azure OpenAI Settings
+    # Azure OpenAI Settings (single key for both GPT-4 and DeepSeek R1)
     azure_openai_api_key: str = ""
     azure_openai_endpoint: str = ""
-    azure_openai_deployment: str = ""
+    azure_openai_deployment: str = ""  # GPT-4 deployment name
+    azure_deepseek_deployment: str = ""  # DeepSeek R1 deployment name
     azure_openai_api_version: str = "2024-02-15-preview"
+    azure_model_type: str = "gpt-4"  # or "deepseek-r1"
 
     # Database
     database_url: str = "sqlite+aiosqlite:///./insurance_assistant.db"
 
     # AI Settings
     embedding_model: str = "all-MiniLM-L6-v2"
-    max_tokens: int = 500
+    max_tokens: int = 2000  # Increased for better responses
     temperature: float = 0.7
+
+    # Response formatting
+    enable_markdown: bool = True
+    strip_reasoning_tags: bool = True  # Remove <think> tags from DeepSeek
 
     # Vector Store
     vector_store_path: str = "./data/vector_store"

@@ -1,12 +1,13 @@
 """
 AI service for handling chat interactions with multiple AI providers.
-Supports: Fallback (FAQ-based), Ollama (local), and Azure OpenAI.
+Supports: Fallback (FAQ-based), Ollama (local), and Azure OpenAI (GPT-4, DeepSeek R1).
 Includes security guardrails, input validation, and smart recommendation flow.
 """
 
 import json
-from typing import List, Dict, Any, Optional
 import re
+import logging
+from typing import List, Dict, Any, Optional
 import httpx
 from openai import AzureOpenAI
 from app.config import get_settings
@@ -14,6 +15,8 @@ from app.services.vector_service import vector_store_service
 from app.services.recommendation_service import get_recommendation_engine
 from app.services.database_service import db_service
 from data.insurance_domain_knowledge import get_full_system_prompt
+
+logger = logging.getLogger(__name__)
 
 
 class AIService:
@@ -27,13 +30,23 @@ class AIService:
         self.recommendation_engine = get_recommendation_engine()
 
         # Initialize Azure OpenAI client if configured
-        if settings.azure_openai_api_key and settings.azure_openai_endpoint:
-            if settings.azure_openai_api_key != "your_azure_api_key_here":
+        # Single Azure key provides access to both GPT-4 and DeepSeek R1
+        if (
+            settings.azure_openai_api_key
+            and settings.azure_openai_endpoint
+            and settings.azure_openai_deployment
+        ):
+            try:
                 self.azure_client = AzureOpenAI(
                     api_key=settings.azure_openai_api_key,
                     api_version=settings.azure_openai_api_version,
                     azure_endpoint=settings.azure_openai_endpoint,
                 )
+                logger.info(
+                    f"Azure OpenAI client initialized successfully (model type: {settings.azure_model_type})"
+                )
+            except Exception as e:
+                logger.warning(f"Failed to initialize Azure OpenAI client: {e}")
 
     async def _call_ollama(
         self,
@@ -84,6 +97,53 @@ class AIService:
             temperature=self.settings.temperature,
         )
         return response.choices[0].message.content
+
+    async def _call_azure_deepseek(
+        self, prompt: str, context: List[Dict[str, str]]
+    ) -> str:
+        """Call Azure OpenAI with DeepSeek R1 deployment"""
+        try:
+            messages = [{"role": "system", "content": prompt}]
+
+            # Add conversation context
+            for msg in context[-5:]:  # Last 5 messages for context
+                messages.append(msg)
+
+            response = self.azure_client.chat.completions.create(
+                model=self.settings.azure_deepseek_deployment,
+                messages=messages,
+                max_tokens=self.settings.max_tokens,
+                temperature=self.settings.temperature,
+            )
+
+            content = response.choices[0].message.content.strip()
+
+            # Strip <think> tags if enabled (DeepSeek R1 uses reasoning tags)
+            if self.settings.strip_reasoning_tags:
+                content = self._strip_reasoning_tags(content)
+
+            return content
+        except Exception as e:
+            logger.error(f"Azure DeepSeek API call failed: {e}")
+            raise
+
+    def _strip_reasoning_tags(self, text: str) -> str:
+        """
+        Remove <think>...</think> tags from DeepSeek R1 responses.
+        These contain the model's reasoning process which users don't need to see.
+        """
+        # Remove <think>...</think> blocks (including multiline)
+        text = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL | re.IGNORECASE)
+
+        # Remove any standalone <think> or </think> tags
+        text = re.sub(r"</?think>", "", text, flags=re.IGNORECASE)
+
+        # Clean up excessive whitespace
+        text = re.sub(r"\n\s*\n\s*\n+", "\n\n", text)
+
+        return text.strip()
+
+        return text
 
     def _validate_insurance_query(self, query: str) -> Dict[str, Any]:
         """Validate if query is insurance-related and check for attacks."""
@@ -174,43 +234,47 @@ class AIService:
         similar_faqs: List[Dict[str, Any]],
         conversation_history: Optional[List[Dict[str, str]]] = None,
     ) -> str:
-        """Build context-aware prompt for Azure OpenAI with enhanced accuracy."""
+        """Build context-aware prompt optimized for GPT-4 and DeepSeek R1."""
 
         # Load comprehensive insurance domain knowledge from dedicated module
         system_context = get_full_system_prompt()
 
         # Add relevant FAQ context
-        context_section = "\n\n=== KNOWLEDGE BASE (FAQs to reference) ===\n"
+        context_section = "\n\n=== KNOWLEDGE BASE ===\n"
+        context_section += "Use this information to provide accurate answers:\n\n"
         for i, faq in enumerate(similar_faqs, 1):
-            context_section += f"\n[FAQ {i}]\n"
-            context_section += f"Category: {faq.get('category', 'general')}\n"
-            context_section += f"Question: {faq['question']}\n"
-            context_section += f"Answer: {faq['answer']}\n"
-            context_section += (
-                f"Relevance Score: {faq.get('similarity_score', 0):.2f}\n"
-            )
+            context_section += f"[Source {i}]\n"
+            context_section += f"Topic: {faq.get('category', 'General')}\n"
+            context_section += f"Q: {faq['question']}\n"
+            context_section += f"A: {faq['answer']}\n"
+            context_section += f"Relevance: {faq.get('similarity_score', 0):.0%}\n\n"
 
         # Add conversation history if available
         history_section = ""
         if conversation_history:
-            history_section = "\n\n=== RECENT CONVERSATION ===\n"
+            history_section = "\n=== CONVERSATION HISTORY ===\n"
             for msg in conversation_history[-3:]:  # Last 3 exchanges
-                history_section += f"User: {msg['user']}\n"
-                history_section += f"AI Avustaa: {msg['assistant']}\n\n"
+                history_section += f"Customer: {msg['user']}\n"
+                history_section += f"You: {msg['assistant']}\n\n"
 
         # Current query with clear instruction
-        query_section = f"\n\n=== CURRENT USER QUESTION ===\n{query}\n"
+        query_section = f"\n=== CUSTOMER QUESTION ===\n{query}\n"
 
         instruction = """
-=== YOUR TASK ===
-Provide a helpful, accurate response to the user's question by:
-1. Using information from the FAQ knowledge base above
-2. Maintaining conversation continuity if there's prior context
-3. Following all critical rules and quality standards
-4. Staying strictly within insurance topics
-5. Being honest if you don't have enough information
+=== RESPONSE GUIDELINES ===
+1. **Accuracy First**: Base your response on the knowledge base provided above
+2. **Be Conversational**: Write naturally, like a friendly expert advisor
+3. **Use Markdown**: Format your response with:
+   - **Bold** for important terms
+   - Lists with bullet points or numbers
+   - Code blocks for examples (if needed)
+   - Tables for comparisons (if helpful)
+4. **Be Specific**: Provide concrete details, numbers, and examples
+5. **Stay On Topic**: Only discuss insurance-related matters
+6. **Admit Limits**: If you don't have enough information, say so honestly
+7. **Structured Responses**: Use headings and sections for clarity when appropriate
 
-Your response:"""
+Now, provide a helpful response to the customer's question:"""
 
         full_prompt = (
             system_context
@@ -298,8 +362,15 @@ Your response:"""
                 model_name = self.settings.ollama_model
 
             elif active_provider == "azure":
-                assistant_message = await self._call_azure_openai(prompt)
-                model_name = self.settings.azure_openai_deployment
+                # Azure supports both GPT-4 and DeepSeek R1
+                if self.settings.azure_model_type == "deepseek-r1":
+                    assistant_message = await self._call_azure_deepseek(
+                        prompt, conversation_history or []
+                    )
+                    model_name = self.settings.azure_deepseek_deployment
+                else:
+                    assistant_message = await self._call_azure_openai(prompt)
+                    model_name = self.settings.azure_openai_deployment
 
             else:
                 # Unknown provider, fall back
@@ -319,7 +390,7 @@ Your response:"""
             }
 
         except Exception as e:
-            print(f"Error calling {active_provider} API: {e}")
+            logger.error(f"Error calling {active_provider} API: {e}")
             # Fall back to rule-based response on error
             return {
                 "response": self._get_fallback_response(similar_faqs),

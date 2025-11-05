@@ -5,6 +5,7 @@ API routes for the AI Insurance Assistant.
 from typing import Dict, Any
 from datetime import datetime
 import uuid
+import httpx
 from fastapi import APIRouter, HTTPException, status
 from app.api.schemas import (
     ChatRequest,
@@ -26,35 +27,42 @@ async def health_check():
     """Health check endpoint."""
     settings = get_settings()
 
-    # Check which providers are configured
-    providers_status = {
-        "fallback": True,  # Always available
+    # Check AI provider status
+    provider_status = {
         "ollama": False,
-        "azure": bool(
-            settings.azure_openai_api_key
-            and settings.azure_openai_endpoint
-            and settings.azure_openai_api_key != "your_azure_api_key_here"
-        ),
+        "azure": False,
     }
 
-    # Try to check if Ollama is running
-    try:
-        import httpx
+    # Determine active model
+    active_model = None
+    if settings.model_provider == "azure":
+        active_model = settings.azure_model_type
+    elif settings.model_provider == "ollama":
+        active_model = settings.ollama_model
 
-        async with httpx.AsyncClient(timeout=2.0) as client:
-            response = await client.get(f"{settings.ollama_base_url}/api/tags")
-            if response.status_code == 200:
-                providers_status["ollama"] = True
-    except:
-        pass
+    # Check Ollama
+    if settings.model_provider == "ollama":
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.get(
+                    f"{settings.ollama_base_url}/api/tags", timeout=2.0
+                )
+                provider_status["ollama"] = response.status_code == 200
+        except Exception:
+            pass
+
+    # Check Azure OpenAI (supports both GPT-4 and DeepSeek R1)
+    if settings.model_provider == "azure" and settings.azure_openai_api_key:
+        provider_status["azure"] = True
 
     return HealthResponse(
         status="healthy",
         app_name=settings.app_name,
         version=settings.app_version,
-        azure_configured=providers_status["azure"],
+        azure_configured=provider_status["azure"],
         model_provider=settings.model_provider,
-        available_providers=providers_status,
+        available_providers=provider_status,
+        active_model=active_model,
     )
 
 
