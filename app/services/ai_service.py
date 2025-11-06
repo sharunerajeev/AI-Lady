@@ -519,7 +519,8 @@ Now, provide a helpful response to the customer's question:"""
         # Get or create context
         if not context:
             db_context = await db_service.get_conversation_context(session_id)
-            if db_context and db_context.collected_answers:
+            # Check if we have an existing recommendation flow context
+            if db_context and db_context.current_flow == "recommendation":
                 context = {
                     "current_flow": db_context.current_flow,
                     "insurance_type": db_context.insurance_type,
